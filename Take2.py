@@ -1,3 +1,5 @@
+import math
+
 # Setting up variables
 while True:
     try:
@@ -18,12 +20,13 @@ roomLength = list[0]
 
 # Desk size
 list2 = sorted([deskside1, deskside2])
-deskDepth = list2[1]/12
-deskWidth = list2[0]/12
+deskDepth = list2[0]/12
+deskWidth = list2[1]/12
 aisleWidth = 4
 minUnit = deskDepth + aisleWidth + deskDepth
 
 #Function
+
 
 def deskRemainder(roomDim, deskDim):
     return divmod(roomDim, deskDim)
@@ -33,25 +36,34 @@ def deskRemainder(roomDim, deskDim):
 longSideCount = deskRemainder(roomWidth, deskWidth)
 shortSideUnitCount = deskRemainder(roomLength, minUnit)
 roughTotal = longSideCount[0] * shortSideUnitCount[0] * 2
+midRowCount = 0
 aisleDeskCount = 0
 vDeskCount = 0
 
-if shortSideUnitCount[0] > 1:
-    aisleDeskCount = shortSideUnitCount[0] * 2 - aisleWidth//deskWidth
+if shortSideUnitCount[0] == 1 and shortSideUnitCount[1] >= aisleWidth + deskDepth:
+    aisleDeskCount = (shortSideUnitCount[0]) * math.ceil(aisleWidth/deskWidth)
 
-elif shortSideUnitCount[0] <= 1:
+elif shortSideUnitCount[0] > 1 and shortSideUnitCount[1] >= aisleWidth + deskDepth:
+    aisleDeskCount = ((shortSideUnitCount[0] - 1) * 2 + 1) * math.ceil(aisleWidth/deskWidth)
+
+elif shortSideUnitCount[0] > 1 and shortSideUnitCount[1] < aisleWidth + deskDepth:
+    aisleDeskCount = (shortSideUnitCount[0] - 1) * 2 * math.ceil(aisleWidth/deskWidth)
+
+elif shortSideUnitCount[0] < 1:
     aisleDeskCount = 0
 
 if shortSideUnitCount[1] >= aisleWidth + deskDepth: #Add a row at the wall if the last row can fit a table + aisle.
     roughTotal = roughTotal + longSideCount[0]
 
-if longSideCount[1] >= deskDepth: #Add extra table on the side of double rows if the aisle is wide enough.
+if longSideCount[1] + math.ceil(aisleWidth/deskWidth)*deskWidth >= aisleWidth + deskDepth: #Add extra table on the side of double rows if the aisle is wide enough.
     vDeskCount = shortSideUnitCount[0] - 1
     roughTotal = roughTotal + vDeskCount
 
 deskCount = roughTotal - aisleDeskCount
 
 print("You can fit " + str(int(deskCount)) + " desk in this room.")
+
+print(list, list2)
 print("LongSideCount: " + str(longSideCount[0]), "Remainder: " + str(longSideCount[1]))
 print("shortSideUnitCount: " + str(shortSideUnitCount[0]), "Remainder: " + str(shortSideUnitCount[1]))
 print("aisleDeskCount: " + str(aisleDeskCount))
