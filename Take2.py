@@ -48,7 +48,7 @@ elif shortSideUnitCount[0] <= 1:
 if shortSideUnitCount[1] >= aisleWidth + deskDepth: #For a row with no shared aisle.
     roughTotal = roughTotal + longSideCount[0]
 
-if longSideCount[1] + deskWidth >= aisleWidth + deskDepth:  #For an extra table on the side.
+if longSideCount[1] + deskWidth >= aisleWidth + deskDepth:  #For an extra table on the side if the aisle is wide enough.
     roughTotal = roughTotal + shortSideUnitCount[0] - 1
 
 deskCount = roughTotal - aisleDeskCount
