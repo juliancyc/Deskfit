@@ -64,7 +64,8 @@ deskCount = roughTotal - aisleDeskCount
 print("You can fit " + str(int(deskCount)) + " desk in this room.")
 
 print(list, list2)
-print("LongSideCount: " + str(longSideCount[0]), "Remainder: " + str(longSideCount[1]))
-print("shortSideUnitCount: " + str(shortSideUnitCount[0]), "Remainder: " + str(shortSideUnitCount[1]))
-print("aisleDeskCount: " + str(aisleDeskCount))
-print("vDeskCount: " + str(vDeskCount))
+print("LongSideCount: " + str(longSideCount[0]) + " desks", "Remainder: " + str(longSideCount[1]) + " ft")
+print("shortSideUnitCount: " + str(shortSideUnitCount[0]+" minUnits"), "Remainder: " + str(shortSideUnitCount[1]) + " ft")
+print("aisleDeskCount: " + str(aisleDeskCount) + " desks")
+print("vDeskCount: " + str(vDeskCount) + " vertical desks")
+
