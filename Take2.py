@@ -3,9 +3,9 @@ while True:
     try:
         roomSide1 = float(input("Please enter the first dimension of the room in US ft."))
         roomSide2 = float(input("Please enter the second dimension of the room in US ft."))
-        deskSidesShort = float(input("Please enter the depth of the desk in US inch"))
-        deskSideLong = float(input("Please enter the width of the desk in US inch"))
-        if roomSide1 * roomSide2 * deskSidesShort * deskSideLong <= 0:
+        deskside1 = float(input("Please enter the first dimension of the desk in US inch"))
+        deskside2 = float(input("Please enter the second dimension of the desk in US inch"))
+        if roomSide1 * roomSide2 * deskside1 * deskside2 <= 0:
             print("Sorry, input must be a positive number, try again")
             continue
         break
@@ -17,9 +17,9 @@ roomWidth = list[1]
 roomLength = list[0]
 
 # Desk size
-
-deskDepth = 24/12
-deskWidth = 48/12
+list2 = sorted([deskside1, deskside2])
+deskDepth = list2[1]
+deskWidth = list2[0]
 aisleWidth = 4
 minUnit = deskDepth + aisleWidth + deskDepth
 
