@@ -12,7 +12,7 @@ def numTestPositive(Dim):
     return val
 
 roomSide1 = numTestPositive(float(input("Please enter the first dimension of the room in US ft.")))
-roomSide2 = numTestPositive(float(input("Please enter the second of the room in US ft.")))
+roomSide2 = numTestPositive(float(input("Please enter the second dimension of the room in US ft.")))
 list = sorted([roomSide1, roomSide2])
 
 # For future adjustment of Non-orthogonal room
@@ -23,7 +23,7 @@ roomLength = list[1]
 #deskSidesShort = float(input("Please enter the depth of the desk in US inch"))
 #deskSideLong = float(input("Please enter the width of the desk in US inch"))
 deskDepth = 24/12
-deskWidth = 48/12
+deskWidth = 80/12
 aisleWidth = 4
 minUnit = deskDepth + aisleWidth + deskDepth
 
@@ -34,15 +34,26 @@ def deskRemainder(roomDim, deskDim):
 
 
 #Main
-lonSideCount = deskRemainder(roomWidth, deskWidth)
+longSideCount = deskRemainder(roomWidth, deskWidth)
 shortSideUnitCount = deskRemainder(roomLength, minUnit)
-roughTotal = lonSideCount[0] * shortSideUnitCount[0] * 2
-aisleDeskCount = shortSideUnitCount[0] * 2 - 1
+roughTotal = longSideCount[0] * shortSideUnitCount[0] * 2
+aisleDeskCount = 0
 
-if shortSideUnitCount[1] >= aisleWidth + deskDepth:
-    roughTotal = roughTotal + lonSideCount[0]
+if shortSideUnitCount[0] > 1:
+    aisleDeskCount = shortSideUnitCount[0] * 2 - aisleWidth//deskWidth
+
+elif shortSideUnitCount[0] <= 1:
+    aisleDeskCount = 0
+
+if shortSideUnitCount[1] >= aisleWidth + deskDepth: #For a row with no shared aisle.
+    roughTotal = roughTotal + longSideCount[0]
+
+if longSideCount[1] + deskWidth >= aisleWidth + deskDepth:  #For an extra table on the side.
+    roughTotal = roughTotal + shortSideUnitCount[0] - 1
 
 deskCount = roughTotal - aisleDeskCount
 
-print(lonSideCount,shortSideUnitCount,roughTotal,aisleDeskCount)
-print(deskCount)
+print("You can fit " + str(int(deskCount)) + " desk in this room.")
+print("LongSideCount: " + str(longSideCount[0]), "Remainder: " + str(longSideCount[1]))
+print("shortSideUnitCount: " + str(shortSideUnitCount[0]), "Remainder: " + str(shortSideUnitCount[1]))
+print("aisleDeskCount: " + str(aisleDeskCount))
