@@ -18,8 +18,8 @@ roomLength = list[0]
 
 # Desk size
 list2 = sorted([deskside1, deskside2])
-deskDepth = list2[1]
-deskWidth = list2[0]
+deskDepth = list2[1]/12
+deskWidth = list2[0]/12
 aisleWidth = 4
 minUnit = deskDepth + aisleWidth + deskDepth
 
