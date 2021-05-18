@@ -71,37 +71,63 @@ model = rhino3dm.File3dm()
 
 roomPt = \
     [rhino3dm.Point3d(0.0, 0.0, 0.0),
-     rhino3dm.Point3d(roomSide2, 0.0, 0.0),
-     rhino3dm.Point3d(roomSide2, roomSide1, 0.0),
-     rhino3dm.Point3d(0.0, roomSide1, 0.0),
+     rhino3dm.Point3d(roomWidth, 0.0, 0.0),
+     rhino3dm.Point3d(roomWidth, roomLength, 0.0),
+     rhino3dm.Point3d(0.0, roomLength, 0.0),
      rhino3dm.Point3d(0.0, 0.0, 0.0)]
 
 model.Objects.AddPolyline(roomPt)
 
 #Desks
-desks = []
+deskList = []
 
 
 i = float(longSideCount[0])
 j = float(shortSideUnitCount[0])
+iList = []
+jList = []
 
 '''
 while i >= 1:
     deskModule = \
-    [rhino3dm.Point3d(i * deskWidth, 0, 0),
-        rhino3dm.Point3d((i - 1) * deskWidth, 0, 0),
-        rhino3dm.Point3d((i - 1) * deskWidth, deskDepth, 0),
-        rhino3dm.Point3d(i * deskWidth, deskDepth, 0),
-        rhino3dm.Point3d(i * deskWidth, 0, 0)]
+    [rhino3dm.Point3d(0, 0, 0),
+        rhino3dm.Point3d(deskWidth, 0, 0),
+        rhino3dm.Point3d(deskWidth, deskDepth, 0),
+        rhino3dm.Point3d(0, deskDepth, 0),
+        rhino3dm.Point3d(0, 0, 0)]
 
-    desks.append(deskModule)
+    deskList.append(deskModule)
     i-=1
 for m in desks:
     model.Objects.AddPolyline(m)
 '''
 
-itertools.zip_longest()
 
+while i >= 1:
+    iList.append(i)
+    i-=1
+
+while j >= 1:
+    jList.append(j)
+    j-=1
+
+deskPt = itertools.product(iList,jList)
+
+for v in deskPt:
+    desk = [rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1]-1)*(deskDepth + (v[1]-1)*aisleWidth), 0),
+        rhino3dm.Point3d((v[0]) * deskWidth, (v[1]-1)*(deskDepth + (v[1]-1)*aisleWidth), 0),
+        rhino3dm.Point3d((v[0]) * deskWidth, (v[1])*(deskDepth + (v[1]-1)*aisleWidth), 0),
+        rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1])*(deskDepth + (v[1]-1)*aisleWidth), 0),
+        rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1]-1)*(deskDepth + (v[1]-1)*aisleWidth), 0)]
+
+    deskList.append(desk)
+
+for d in deskList:
+    model.Objects.AddPolyline(d)
+
+model.Write('DeskPlan.3dm', 6)
+
+'''
 while i >= 1:
     deskModule = \
     [rhino3dm.Point3d(i * deskWidth, j*(deskDepth + aisleWidth), 0),
@@ -110,19 +136,23 @@ while i >= 1:
         rhino3dm.Point3d(i * deskWidth, j*(deskDepth + aisleWidth + deskDepth), 0),
         rhino3dm.Point3d(i * deskWidth, j*(deskDepth + aisleWidth), 0)]
 
-    desks.append(deskModule)
+    deskList.append(deskModule)
 
     i -= 1
 
-for m in desks:
+for m in deskList:
     model.Objects.AddPolyline(m)
 
 model.Write('DeskPlan.3dm', 6)
+'''
 
-print(desks)
+print()
+print(iList)
+print(jList)
+print(len(deskList))
 print("You can fit " + str(int(deskCount)) + " desk in this room.")
 
-print(list, list2)
+print(list1, list2)
 print("LongSideCount: " + str(longSideCount[0]) + " desks", "Remainder: " + str(longSideCount[1]) + " ft")
 print("shortSideUnitCount: " + str(shortSideUnitCount[0])+" Min Units", "Remainder: " + str(shortSideUnitCount[1]) + " ft")
 print("aisleDeskCount: " + str(aisleDeskCount) + " desks")
