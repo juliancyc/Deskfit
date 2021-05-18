@@ -1,3 +1,4 @@
+import itertools
 import math
 import rhino3dm
 
@@ -84,6 +85,7 @@ desks = []
 i = float(longSideCount[0])
 j = float(shortSideUnitCount[0])
 
+'''
 while i >= 1:
     deskModule = \
     [rhino3dm.Point3d(i * deskWidth, 0, 0),
@@ -96,19 +98,24 @@ while i >= 1:
     i-=1
 for m in desks:
     model.Objects.AddPolyline(m)
+'''
 
-while i >= 1 or j >= 0:
+itertools.zip_longest()
+
+while i >= 1:
     deskModule = \
-    [rhino3dm.Point3d(i * deskWidth, j*(deskDepth+aisleWidth), 0),
-        rhino3dm.Point3d((i - 1) * deskWidth, 0, 0),
-        rhino3dm.Point3d((i - 1) * deskWidth, deskDepth, 0),
-        rhino3dm.Point3d(i * deskWidth, deskDepth, 0),
-        rhino3dm.Point3d(i * deskWidth, 0, 0)]
+    [rhino3dm.Point3d(i * deskWidth, j*(deskDepth + aisleWidth), 0),
+        rhino3dm.Point3d((i - 1) * deskWidth, j*(deskDepth + aisleWidth + deskDepth), 0),
+        rhino3dm.Point3d((i - 1) * deskWidth, j*(deskDepth + aisleWidth), 0),
+        rhino3dm.Point3d(i * deskWidth, j*(deskDepth + aisleWidth + deskDepth), 0),
+        rhino3dm.Point3d(i * deskWidth, j*(deskDepth + aisleWidth), 0)]
+
+    desks.append(deskModule)
+
     i -= 1
-    if j > 0:
-        j -= 1
-    else:
-        j = 0
+
+for m in desks:
+    model.Objects.AddPolyline(m)
 
 model.Write('DeskPlan.3dm', 6)
 
