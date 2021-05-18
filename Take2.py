@@ -1,4 +1,5 @@
 import math
+import rhino3dm
 
 # Setting up variables
 while True:
@@ -60,6 +61,14 @@ if longSideCount[1] + math.ceil(aisleWidth/deskWidth)*deskWidth >= aisleWidth + 
     roughTotal = roughTotal + vDeskCount
 
 deskCount = roughTotal - aisleDeskCount
+
+#Rhino Part
+model = rhino3dm.File3dm()
+
+roomPt = [rhino3dm.Point3d(0.0, 0.0, 0.0), rhino3dm.Point3d(roomSide1, 0.0, 0.0), rhino3dm.Point3d(roomSide1, roomSide2, 0.0), rhino3dm.Point3d(0.0, roomSide2, 0.0)]
+model.Objects.AddPolyline(roomPt)
+model.Write('DeskPlan.3dm', 6)
+
 
 print("You can fit " + str(int(deskCount)) + " desk in this room.")
 
