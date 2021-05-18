@@ -6,21 +6,21 @@ while True:
     try:
         roomSide1 = float(input("Please enter the first dimension of the room in US ft."))
         roomSide2 = float(input("Please enter the second dimension of the room in US ft."))
-        deskside1 = float(input("Please enter the first dimension of the desk in US inch"))
-        deskside2 = float(input("Please enter the second dimension of the desk in US inch"))
-        if roomSide1 * roomSide2 * deskside1 * deskside2 <= 0:
+        deskSide1 = float(input("Please enter the first dimension of the desk in US inch"))
+        deskSide2 = float(input("Please enter the second dimension of the desk in US inch"))
+        if roomSide1 * roomSide2 * deskSide1 * deskSide2 <= 0:
             print("Sorry, input must be a positive number, try again")
             continue
         break
     except ValueError:
         print("Please enter an positive number")
 
-list = sorted([roomSide1, roomSide2])
-roomWidth = list[1]
-roomLength = list[0]
+list1 = sorted([roomSide1, roomSide2])
+roomWidth = list1[1]
+roomLength = list1[0]
 
 # Desk size
-list2 = sorted([deskside1, deskside2])
+list2 = sorted([deskSide1, deskSide2])
 deskDepth = list2[0]/12
 deskWidth = list2[1]/12
 aisleWidth = 4
@@ -62,14 +62,57 @@ if longSideCount[1] + math.ceil(aisleWidth/deskWidth)*deskWidth >= aisleWidth + 
 
 deskCount = roughTotal - aisleDeskCount
 
+
 #Rhino Part
+
+#Room
 model = rhino3dm.File3dm()
 
-roomPt = [rhino3dm.Point3d(0.0, 0.0, 0.0), rhino3dm.Point3d(roomSide1, 0.0, 0.0), rhino3dm.Point3d(roomSide1, roomSide2, 0.0), rhino3dm.Point3d(0.0, roomSide2, 0.0)]
+roomPt = \
+    [rhino3dm.Point3d(0.0, 0.0, 0.0),
+     rhino3dm.Point3d(roomSide2, 0.0, 0.0),
+     rhino3dm.Point3d(roomSide2, roomSide1, 0.0),
+     rhino3dm.Point3d(0.0, roomSide1, 0.0),
+     rhino3dm.Point3d(0.0, 0.0, 0.0)]
+
 model.Objects.AddPolyline(roomPt)
+
+#Desks
+desks = []
+
+
+i = float(longSideCount[0])
+j = float(shortSideUnitCount[0])
+
+while i >= 1:
+    deskModule = \
+    [rhino3dm.Point3d(i * deskWidth, 0, 0),
+        rhino3dm.Point3d((i - 1) * deskWidth, 0, 0),
+        rhino3dm.Point3d((i - 1) * deskWidth, deskDepth, 0),
+        rhino3dm.Point3d(i * deskWidth, deskDepth, 0),
+        rhino3dm.Point3d(i * deskWidth, 0, 0)]
+
+    desks.append(deskModule)
+    i-=1
+for m in desks:
+    model.Objects.AddPolyline(m)
+
+while i >= 1 or j >= 0:
+    deskModule = \
+    [rhino3dm.Point3d(i * deskWidth, j*(deskDepth+aisleWidth), 0),
+        rhino3dm.Point3d((i - 1) * deskWidth, 0, 0),
+        rhino3dm.Point3d((i - 1) * deskWidth, deskDepth, 0),
+        rhino3dm.Point3d(i * deskWidth, deskDepth, 0),
+        rhino3dm.Point3d(i * deskWidth, 0, 0)]
+    i -= 1
+    if j > 0:
+        j -= 1
+    else:
+        j = 0
+
 model.Write('DeskPlan.3dm', 6)
 
-
+print(desks)
 print("You can fit " + str(int(deskCount)) + " desk in this room.")
 
 print(list, list2)
