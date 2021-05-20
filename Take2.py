@@ -114,11 +114,11 @@ while j >= 1:
 deskPt = itertools.product(iList,jList)
 
 for v in deskPt:
-    desk = [rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1]-1)*(deskDepth + (v[1]-1)*aisleWidth), 0),
-        rhino3dm.Point3d((v[0]) * deskWidth, (v[1]-1)*(deskDepth + (v[1]-1)*aisleWidth), 0),
-        rhino3dm.Point3d((v[0]) * deskWidth, (v[1])*(deskDepth + (v[1]-1)*aisleWidth), 0),
-        rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1])*(deskDepth + (v[1]-1)*aisleWidth), 0),
-        rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1]-1)*(deskDepth + (v[1]-1)*aisleWidth), 0)]
+    desk = [rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1]-1) * (deskDepth) + (v[1]-1)*(aisleWidth+deskDepth), 0),
+        rhino3dm.Point3d((v[0]) * deskWidth, (v[1]-1) * (deskDepth) + (v[1]-1)*(aisleWidth+deskDepth), 0),
+        rhino3dm.Point3d((v[0]) * deskWidth, (v[1]) * (deskDepth) + (v[1]-1)*(aisleWidth+deskDepth), 0),
+        rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1]) * deskDepth + (v[1]-1)*(aisleWidth+deskDepth), 0),
+        rhino3dm.Point3d((v[0]-1) * deskWidth, (v[1]-1) * deskDepth + (v[1]-1)*(aisleWidth+deskDepth), 0)]
 
     deskList.append(desk)
 
