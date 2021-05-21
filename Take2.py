@@ -108,7 +108,7 @@ def gen_row(d,i):
     while i > 0:
         new_d = []
         for p in d:
-            new_p = addX(p,n)
+            new_p = addX(p,i)
             new_d.append(new_p)
         r.append(new_d)
         i -= 1
