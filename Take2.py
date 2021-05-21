@@ -41,6 +41,8 @@ roughTotal = longSideCount[0] * shortSideUnitCount[0] * 2
 midRowCount = 0
 aisleDeskCount = 0
 vDeskCount = 0
+loneRow = False
+vDesk = False
 
 if shortSideUnitCount[0] == 1 and shortSideUnitCount[1] >= aisleWidth + deskDepth:
     aisleDeskCount = (shortSideUnitCount[0]) * math.ceil(aisleWidth/deskWidth)
@@ -56,19 +58,23 @@ elif shortSideUnitCount[0] < 1:
 
 if shortSideUnitCount[1] >= aisleWidth + deskDepth: #Add a row at the wall if the last row can fit a table + aisle.
     roughTotal = roughTotal + longSideCount[0]
+    loneRow = True
 
 if longSideCount[1] + math.ceil(aisleWidth/deskWidth)*deskWidth >= aisleWidth + deskDepth: #Add extra table on the side of double rows if the aisle is wide enough.
     vDeskCount = shortSideUnitCount[0] - 1
     roughTotal = roughTotal + vDeskCount
+    vDesk = True
 
 deskCount = roughTotal - aisleDeskCount
 
 
 #Rhino Part
+model = rhino3dm.File3dm()
+deskList = []
+rowList = []
+deskRoughTotal = []
 
 #Room
-model = rhino3dm.File3dm()
-
 roomPt = \
     [rhino3dm.Point3d(0.0, 0.0, 0.0),
      rhino3dm.Point3d(roomWidth, 0.0, 0.0),
@@ -78,14 +84,39 @@ roomPt = \
 
 model.Objects.AddPolyline(roomPt)
 
-#Desks
-deskList = []
+#Desk Module
+desk = \
+    [[0, 0, 0],
+     [deskWidth, 0, 0],
+     [deskWidth, deskDepth, 0],
+     [0, deskDepth, 0],
+     [0, 0, 0]]
+
+#Functions
+
+def addY(p,n):
+    p[1] = p[1] + n
+    return p
+
+def addX(p,n):
+    p[0] = p[0] + n
+    return p
 
 
-i = float(longSideCount[0])
-j = float(shortSideUnitCount[0])
-iList = []
-jList = []
+def gen_row(d,i):
+    r = []
+    while i > 0:
+        new_d = []
+        for p in d:
+            new_p = addX(p,n)
+            new_d.append(new_p)
+        r.append(new_d)
+        i -= 1
+    return r
+
+print(gen_row(desk, 5))
+
+
 
 '''
 while i >= 1:
@@ -100,7 +131,7 @@ while i >= 1:
     i-=1
 for m in desks:
     model.Objects.AddPolyline(m)
-'''
+
 
 
 while i >= 1:
@@ -127,7 +158,7 @@ for d in deskList:
 
 model.Write('DeskPlan.3dm', 6)
 
-'''
+
 while i >= 1:
     deskModule = \
     [rhino3dm.Point3d(i * deskWidth, j*(deskDepth + aisleWidth), 0),
@@ -146,10 +177,6 @@ for m in deskList:
 model.Write('DeskPlan.3dm', 6)
 '''
 
-print()
-print(iList)
-print(jList)
-print(len(deskList))
 print("You can fit " + str(int(deskCount)) + " desk in this room.")
 
 print(list1, list2)
