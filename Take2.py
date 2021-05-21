@@ -75,8 +75,9 @@ print("aisleDeskCount: " + str(aisleDeskCount) + " desks")
 print("vDeskCount: " + str(vDeskCount) + " vertical desks")
 
 
-'''
-#Rhino Part
+
+#Rhino Part (WIP)
+
 model = rhino3dm.File3dm()
 deskList = []
 rowList = []
@@ -92,7 +93,7 @@ roomPt = \
 
 model.Objects.AddPolyline(roomPt)
 
-
+'''
 #Rhino:Take1  Desk Module to move/copy around 
 while i >= 1:
     deskModule = \
@@ -123,8 +124,14 @@ while i >= 1:
 
 for m in deskList:
     model.Objects.AddPolyline(m)
-
+'''
 #Rhino Take2: Desk module + location calculation Ver2
+
+i = longSideCount[0]
+j = shortSideUnitCount[0]
+iList  = []
+jList = []
+
 while i >= 1:
     iList.append(i)
     i-=1
@@ -149,8 +156,7 @@ for d in deskList:
 
 model.Write('DeskPlan.3dm', 6)
 
-
-
+'''
 #Rhino:Take3 Simple Functions WIP
 #Desk Module
 desk = \
@@ -185,8 +191,10 @@ def gen_row(d,i):
 
 
 
+
+'''
 #Baking/Generating Rhino 3dm file
 model.Write('DeskPlan.3dm', 6)
-'''
+
 
 
