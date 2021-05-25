@@ -166,11 +166,11 @@ model.Write('DeskPlan.3dm', 6) #Generating Rhino3dm
 #Rhino:Take3 Simple Functions WIP
 #Desk Module
 desk = \
-    [[0, 0, 0],
-     [deskWidth, 0, 0],
-     [deskWidth, deskDepth, 0],
-     [0, deskDepth, 0],
-     [0, 0, 0]]
+    [[0.0, 0.0, 0.0],
+     [deskWidth, 0.0, 0.0],
+     [deskWidth, deskDepth, 0.0],
+     [0.0, deskDepth, 0.0],
+     [0.0, 0.0, 0.0]]
 
 print(desk)
 
@@ -185,18 +185,42 @@ def addPointX(p,n):
     return new_p
 
 
-def gen_row(d,i):
+def gen_row(d, i):
     r = []
     l = [i * deskWidth for i in range (0,i)]
+    r_Drawn = []
+
     for n in l:
         new_d = []
         for p in d:
             new_p = addPointX(p,n)
             new_d.append(new_p)
         r.append(new_d)
-    return (r,l)
+
+    for d in r:
+        d_PointDrawn = []
+        for xyz_value in d:
+            pt = rhino3dm.Point3d(xyz_value[0], xyz_value[1], xyz_value[2])
+            d_PointDrawn.append(pt)
+        r_Drawn.append(model.Objects.AddPolyline(d_PointDrawn))
+
+    return r_Drawn
 
 
-print(gen_row(desk, 5))
-print(desk)
+#Draw
 
+deskList = gen_row(desk, int(longSideCount[0]))
+print(deskList)
+
+'''
+for desk in deskList:
+    deskPointDrawn = []
+    for xyz_value in desk:
+         point = rhino3dm.Point3d(xyz_value[0], xyz_value[1], xyz_value[2])
+         deskPointDrawn.append(point)
+    deskDrawn.append(model.Objects.AddPolyline(deskPointDrawn))
+
+rowDrawn.append(deskDrawn)
+'''
+
+model.Write('DeskPlan.3dm', 6)
