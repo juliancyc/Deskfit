@@ -190,11 +190,11 @@ def gen_row(d, i):
     l = [i * deskWidth for i in range (0,i)]
     r_Drawn = []
 
-    for n in l:
+    for num in l:
         new_d = []
-        for p in d:
-            new_p = addPointX(p,n)
-            new_d.append(new_p)
+        for pt in d:
+            new_pt = addPointX(pt,num)
+            new_d.append(new_pt)
         r.append(new_d)
 
     for d in r:
@@ -209,8 +209,10 @@ def gen_row(d, i):
 
 #Draw
 
-deskList = gen_row(desk, int(longSideCount[0]))
+gen_row(desk, int(longSideCount[0]))
 print(deskList)
+model.Write('DeskPlan.3dm', 6)
+
 
 '''
 for desk in deskList:
@@ -222,5 +224,3 @@ for desk in deskList:
 
 rowDrawn.append(deskDrawn)
 '''
-
-model.Write('DeskPlan.3dm', 6)
